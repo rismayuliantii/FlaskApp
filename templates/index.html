@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Status Pembayaran Tertanggung</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Prediksi Status Pembayaran Tertanggung</h1>
+
+    <form id="prediction-form">
+        <label for="PDate">Tanggal Pembayaran (PDate):</label>
+        <input type="date" id="PDate" name="PDate"><br><br>
+        <label for="BillDate">Tanggal Tagihan (BillDate):</label>
+        <input type="date" id="BillDate" name="BillDate"><br><br>
+        <button type="button" onclick="predict()">Predict</button>
+    </form>
+
+    <div id="prediction-result"></div>
+    <canvas id="prediction-chart" width="400" height="400"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function predict() {
+        var PDate = document.getElementById('PDate').value;
+        var BillDate = document.getElementById('BillDate').value;
+
+        var xhr = new XMLHttpRequest();
+        var url = '/predict';
+        var params = 'PDate=' + PDate + '&BillDate=' + BillDate;
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                var predictionResult = response.prediction;
+
+                // Perbarui hasil prediksi
+                document.getElementById('prediction-result').innerHTML = 'Hasil Prediksi Status Pembayaran: ' + predictionResult;
+
+                // Render grafik batang
+                renderChart(predictionResult);
+            }
+        }
+
+        xhr.send(params);
+    }
+
+    var barChart; // Variabel global untuk menyimpan referensi ke grafik
+
+    function renderChart(prediction) {
+        var ctx = document.getElementById('prediction-chart').getContext('2d');
+
+        // Hapus grafik yang ada jika sudah ada
+        if (barChart) {
+            barChart.destroy();
+        }
+
+        var chartData = {
+            labels: ['Tepat Waktu', 'Tertunggak'],
+            datasets: [{
+                label: 'Prediksi',
+                data: [prediction === 'Lancar' ? 1 : 0, prediction === 'Tertunggak' ? 1 : 0],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        var options = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        // Buat grafik baru
+        barChart = new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: options
+        });
+    }
+
+    // Fungsi untuk mendapatkan data presentase dari backend dan merender grafik pie
+    function loadPercentageChart() {
+        var xhr = new XMLHttpRequest();
+        var url = '/get_percentage';
+        xhr.open('GET', url, true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                var onTimePercentage = response.on_time;
+                var latePercentage = response.late;
+
+                // Render grafik pie
+                var ctx = document.getElementById('percentage-chart').getContext('2d');
+                var percentageChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Tepat Waktu', 'Tertunggak'],
+                        datasets: [{
+                            data: [onTimePercentage, latePercentage],
+                            backgroundColor: [
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(255, 99, 132, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(255, 99, 132, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    }
+                });
+            }
+        }
+
+        xhr.send();
+    }
+
+    // Panggil fungsi untuk memuat grafik pie saat halaman dimuat
+    window.onload = function() {
+        loadPercentageChart();
+    }
+</script>
+
+</body>
+</html>

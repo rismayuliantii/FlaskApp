@@ -1,0 +1,125 @@
+/* Reset CSS */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* Neutral background color */
+    color: #333; /* Darker text color for good contrast */
+}
+
+.container {
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #fffbe7; /* Light yellow background to match the image */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 25px;
+    color: #0056b3; /* Dark blue color for the title */
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    background-color: #ffcc00; /* Bright yellow color matching the image */
+    color: #333; /* Dark text color for good contrast */
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e6b800; /* Slightly darker yellow for hover effect */
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+input[type="date"], 
+button {
+    width: calc(100% - 30px);
+    padding: 12px 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.result {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #fffbf0; /* Light yellowish background for the result area */
+    border: 1px solid #ddd; /* Neutral border color */
+    border-radius: 5px;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.statistics {
+    margin-top: 25px;
+}
+
+.statistics h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #0056b3; /* Dark blue color for the statistics title */
+}
+
+/* Additional styles for images */
+img {
+    max-width: 150px;
+    max-height: 150px;
+    display: block;
+    margin: 20px auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer styling */
+.footer {
+    margin-top: 40px;
+    padding: 10px;
+    background-color: #0056b3; /* Dark blue color for the footer */
+    color: #fff;
+    border-radius: 5px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+/* Add this section to your existing CSS file */
+#prediction-result {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #fff5cc; /* Light yellow background to make it stand out */
+    border: 2px solid #ffd700; /* Gold border for better visibility */
+    border-radius: 5px;
+    color: #333;
+    font-size: 1.5em; /* Increased font size */
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    text-align: center;
+}
+
